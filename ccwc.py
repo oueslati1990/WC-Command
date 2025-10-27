@@ -17,8 +17,9 @@ def count_bytes(content):
     Returns:
         int: number of bytes
     """
-    
-    pass
+    # Simply return the length of the bytes object
+    # len() on bytes gives us the byte count
+    return len(content)
 
 
 def count_lines(content):
@@ -31,7 +32,7 @@ def count_lines(content):
     Returns:
         int: number of lines
     """
-    
+
     pass
 
 
@@ -60,7 +61,7 @@ def count_characters(content):
         int: number of characters
     """
     
-    pass
+    return len(content)
 
 
 def read_file(filename):
@@ -103,12 +104,17 @@ def main():
     # Parse the arguments
     args = parser.parse_args()
 
-    print(f"Arguments received:")
-    print(f"  Bytes flag (-c): {args.bytes}")
-    print(f"  Lines flag (-l): {args.lines}")
-    print(f"  Words flag (-w): {args.words}")
-    print(f"  Chars flag (-m): {args.chars}")
-    print(f"  Filename: {args.filename}")
+    # Read the file content
+    content = read_file(args.filename)
+
+    # Process based on which flag was provided
+    if args.bytes:
+        # Count bytes with -c flag
+        result = count_bytes(content)
+        print(f"{result} {args.filename}")
+    else:
+        # For now, show a message if no flag is provided
+        print("Please specify a flag: -c, -l, -w, or -m")
 
 
 if __name__ == '__main__':
