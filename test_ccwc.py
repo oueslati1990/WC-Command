@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""
+Tests for ccwc - word count command implementation
+Starting with byte count (-c flag)
+"""
+
+import subprocess
+
+
+def run_ccwc(args):
+    """
+    Helper function to run ccwc.py with given arguments
+
+    Args:
+        args: list of command-line arguments
+
+    Returns:
+        tuple: (stdout, stderr, return_code)
+    """
+    cmd = ['python3', 'ccwc.py'] + args
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    return result.stdout.strip(), result.stderr.strip(), result.returncode
+
+
+def test_byte_count():
+    """Test -c flag for byte counting"""
+    print("Testing: Byte count with -c flag")
+
+    stdout, stderr, returncode = run_ccwc(['-c', 'test.txt'])
+
+    print(f"  Output: {stdout}")
+    print(f"  Errors: {stderr}")
+    print(f"  Return code: {returncode}")
+
+    # Check if command succeeded
+    assert returncode == 0, f"Command failed with: {stderr}"
+
+    # Check if output contains a number and filename
+    assert 'test.txt' in stdout, f"Expected filename in output, got '{stdout}'"
+
+    # Extract and verify we got a valid byte count
+    parts = stdout.split()
+    assert len(parts) == 2, f"Expected '# filename' format, got '{stdout}'"
+
+    byte_count = int(parts[0])
+    print(f"  Byte count: {byte_count}")
+
+    # Verify it's a positive number
+    assert byte_count > 0, f"Expected positive byte count, got {byte_count}"
+
+    print("  ✓ Test passed!")
+
+
+if __name__ == '__main__':
+    print("=" * 50)
+    print("Testing ccwc - Byte Count Feature")
+    print("=" * 50)
+
+    try:
+        test_byte_count()
+        print("\n✓ All tests passed!")
+    except AssertionError as e:
+        print(f"\n✗ Test failed: {e}")
+        exit(1)
+    except Exception as e:
+        print(f"\n✗ Error: {e}")
+        exit(1)
