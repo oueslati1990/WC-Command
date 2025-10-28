@@ -32,8 +32,9 @@ def count_lines(content):
     Returns:
         int: number of lines
     """
+    lines = content.count(b"\n")
 
-    pass
+    return lines 
 
 
 def count_words(content):
@@ -46,8 +47,9 @@ def count_words(content):
     Returns:
         int: number of words
     """
+    words = content.split()
     
-    pass
+    return len(words)
 
 
 def count_characters(content):
@@ -59,9 +61,17 @@ def count_characters(content):
 
     Returns:
         int: number of characters
+
+    Raises:
+        UnicodeDecodeError: if content cannot be decoded as UTF-8
     """
-    
-    return len(content)
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError:
+        # Try with error handling - replace invalid chars
+        text = content.decode("utf-8", errors="replace")
+
+    return len(text)
 
 
 def read_file(filename):
@@ -105,16 +115,50 @@ def main():
     args = parser.parse_args()
 
     # Read the file content
-    content = read_file(args.filename)
+    try:
+        if args.filename:
+            content = read_file(args.filename)
+        else:
+            # Read from stdin in binary mode
+            content = sys.stdin.buffer.read()
+    except FileNotFoundError:
+        print(f"ccwc: {args.filename}: No such file or directory", file=sys.stderr)
+        sys.exit(1)
+    except PermissionError:
+        print(f"ccwc: {args.filename}: Permission denied", file=sys.stderr)
+        sys.exit(1)
+    except IOError as e:
+        print(f"ccwc: {args.filename}: {e}", file=sys.stderr)
+        sys.exit(1)
 
     # Process based on which flag was provided
+    # Default behavior: show lines, words, and bytes (like wc)
+    if not (args.bytes or args.lines or args.words or args.chars):
+        args.lines = True
+        args.words = True
+        args.bytes = True
+
+    # Collect results in the correct order (lines, words, bytes/chars)
+    results = []
+
+    if args.lines:
+        results.append(str(count_lines(content)))
+
+    if args.words:
+        results.append(str(count_words(content)))
+
     if args.bytes:
-        # Count bytes with -c flag
-        result = count_bytes(content)
-        print(f"{result} {args.filename}")
-    else:
-        # For now, show a message if no flag is provided
-        print("Please specify a flag: -c, -l, -w, or -m")
+        results.append(str(count_bytes(content)))
+
+    if args.chars:
+        results.append(str(count_characters(content)))
+
+    # Format output like wc: counts followed by filename (if provided)
+    output = " ".join(results)
+    if args.filename:
+        output += f" {args.filename}"
+    print(output)
+        
 
 
 if __name__ == '__main__':
