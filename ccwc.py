@@ -7,7 +7,7 @@ import sys
 import argparse
 
 
-def count_bytes(content):
+def count_bytes(content: bytes):
     """
     Count the number of bytes in the content.
 
@@ -17,12 +17,11 @@ def count_bytes(content):
     Returns:
         int: number of bytes
     """
-    # Simply return the length of the bytes object
     # len() on bytes gives us the byte count
     return len(content)
 
 
-def count_lines(content):
+def count_lines(content: bytes):
     """
     Count the number of lines (newline characters) in the content.
 
@@ -37,7 +36,7 @@ def count_lines(content):
     return lines 
 
 
-def count_words(content):
+def count_words(content: bytes):
     """
     Count the number of words in the content.
 
@@ -52,7 +51,7 @@ def count_words(content):
     return len(words)
 
 
-def count_characters(content):
+def count_characters(content: bytes):
     """
     Count the number of characters (not bytes) in the content.
 

@@ -21,6 +21,62 @@ def run_ccwc(args):
     result = subprocess.run(cmd, capture_output=True, text=True)
     return result.stdout.strip(), result.stderr.strip(), result.returncode
 
+def test_words_count():
+    """Test -m flag for word counting"""
+    print("Testing: Word count with -m flag")
+
+    stdout, stderr, returncode = run_ccwc(['-m'], 'test.txt')
+
+    print(f" Output: {stdout}")
+    print(f" Errors: {stderr}")
+    print(f"  Return code: {returncode}")
+
+    # Check if command succeeded
+    assert returncode == 0, f"Command failed with errors : {stderr}"
+
+    # Check if output contains a number and filename
+    assert 'test.txt' in stdout, f"Expected filename in output, got '{stdout}'"
+
+    # Extract and verify we got a valid words count
+    parts = stdout.split()
+    assert len(parts) == 2, f"Expected '# filename' format, got '{stdout}'"
+
+    words_count = int(parts[0])
+    print(f" Words count : {words_count}")
+
+    # Verify it's a positive number
+    assert words_count > 0, f"Expected positive words count, got {words_count}"
+
+    print("  ✓ Test passed!")
+
+
+def test_lines_count():
+    """Test -l flag for lines counting"""
+    print("Testing: Lines count with -l flag")
+
+    stdout, stderr, returncode = run_ccwc(['-l', 'test.txt'])
+
+    print(f"  Output: {stdout}")
+    print(f"  Errors: {stderr}")
+    print(f"  Return code: {returncode}")
+
+    # Check if command succeeded
+    assert returncode == 0, f"Command failed with: {stderr}"
+
+    # Check if output contains a number and filename
+    assert 'test.txt' in stdout, f"Expected filename in output, got '{stdout}'"
+
+    # Extract and verify we got a valid lines count
+    parts = stdout.split()
+    assert len(parts) == 2, f"Expected '# filename' format, got '{stdout}'"
+
+    lines_count = int(parts[0])
+    print(f"  Lines count: {lines_count}")
+
+    # Verify it's a positive number
+    assert lines_count > 0, f"Expected positive lines count, got {lines_count}"
+
+    print("  ✓ Test passed!")
 
 def test_byte_count():
     """Test -c flag for byte counting"""
