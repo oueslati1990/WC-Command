@@ -25,7 +25,7 @@ def test_chars_count():
     """Test -m flag for char counting"""
     print("Testing: Char count with -m flag")
 
-    stdout, stderr, returncode = run_ccwc(['-m'], 'test.txt')
+    stdout, stderr, returncode = run_ccwc(['-m','test.txt'])
 
     print(f" Output: {stdout}")
     print(f" Errors: {stderr}")
@@ -53,7 +53,7 @@ def test_words_count():
     """Test -w flag for word counting"""
     print("Testing: Word count with -w flag")
 
-    stdout, stderr, returncode = run_ccwc(['-w'], 'test.txt')
+    stdout, stderr, returncode = run_ccwc(['-w', 'test.txt'])
 
     print(f" Output: {stdout}")
     print(f" Errors: {stderr}")
