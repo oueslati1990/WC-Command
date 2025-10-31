@@ -29,7 +29,7 @@ def test_chars_count():
 
     print(f" Output: {stdout}")
     print(f" Errors: {stderr}")
-    print(f"  Return code: {returncode}")
+    print(f" Return code: {returncode}")
 
     # Check if command succeeded
     assert returncode == 0, f"Command failed with errors : {stderr}"
@@ -57,7 +57,7 @@ def test_words_count():
 
     print(f" Output: {stdout}")
     print(f" Errors: {stderr}")
-    print(f"  Return code: {returncode}")
+    print(f" Return code: {returncode}")
 
     # Check if command succeeded
     assert returncode == 0, f"Command failed with errors : {stderr}"
@@ -134,6 +134,36 @@ def test_byte_count():
 
     print("  ✓ Test passed!")
 
+def test_default_behaviour():
+    """Test default behaviour : lines, words, bytes count"""
+    print("Testing: default behaviour with no flags")
+    stdout, stderr, returncode = run_ccwc(['test.txt'])
+
+    print(f"  Output: {stdout}")
+    print(f"  Errors: {stderr}")
+    print(f"  Return code: {returncode}")
+
+    # Check if command succeeded
+    assert returncode == 0, f"Test failed with errors : {stderr}"
+
+    # Check if output contains a number and filename
+    assert 'test.txt' in stdout, f"Expected filename in output, got '{stdout}'"
+
+    # Extract and verify we got a valid byte count, words count and lines count
+    parts = stdout.split()
+    
+    # Verify the format is correct 
+    assert len(parts) == 4, f"Format not as expected"
+
+    # byte count, words count and lines count must be positive
+    lines_count = int(parts[0])
+    words_count = int(parts[1])
+    bytes_count = int(parts[2])
+    assert lines_count >= 0, f"Number of lines should be positive, got {lines_count}"
+    assert words_count >= 0, f"Number of words should be positive, got {words_count}"
+    assert bytes_count >= 0, f"Number of bytes should be positive, got {bytes_count}"
+
+    print("  ✓ Test passed!")
 
 if __name__ == '__main__':
     print("=" * 50)
@@ -142,6 +172,10 @@ if __name__ == '__main__':
 
     try:
         test_byte_count()
+        test_chars_count()
+        test_lines_count()
+        test_words_count()
+        test_default_behaviour()
         print("\n✓ All tests passed!")
     except AssertionError as e:
         print(f"\n✗ Test failed: {e}")
