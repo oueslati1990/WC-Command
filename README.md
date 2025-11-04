@@ -17,7 +17,7 @@ The tool handles binary file reading and UTF-8 decoding for accurate character c
 
 ### Prerequisites
 
-- Python 3.6 or higher
+- Python 3.7 or higher
 
 ### Setup
 
@@ -27,9 +27,18 @@ git clone <repository-url>
 cd WC-Command
 ```
 
-2. Make the script executable (optional):
+2. Install the package:
 ```bash
-chmod +x ccwc.py
+pip install -e .
+```
+
+This will install `ccwc` as a command-line tool that you can run from anywhere.
+
+### Alternative: Run directly without installation
+
+You can also run the script directly with Python:
+```bash
+python3 ccwc.py [OPTIONS] [FILE]
 ```
 
 
@@ -38,13 +47,7 @@ chmod +x ccwc.py
 ### Basic Syntax
 
 ```bash
-python3 ccwc.py [OPTIONS] [FILE]
-```
-
-Or if made executable:
-
-```bash
-./ccwc.py [OPTIONS] [FILE]
+ccwc [OPTIONS] [FILE]
 ```
 
 ### Available Flags
@@ -60,43 +63,43 @@ Or if made executable:
 
 **Count bytes in a file:**
 ```bash
-python3 ccwc.py -c test.txt
+ccwc -c test.txt
 # Output: 342190 test.txt
 ```
 
 **Count lines in a file:**
 ```bash
-python3 ccwc.py -l test.txt
+ccwc -l test.txt
 # Output: 7145 test.txt
 ```
 
 **Count words in a file:**
 ```bash
-python3 ccwc.py -w test.txt
+ccwc -w test.txt
 # Output: 58164 test.txt
 ```
 
 **Count characters in a file:**
 ```bash
-python3 ccwc.py -m test.txt
+ccwc -m test.txt
 # Output: 339292 test.txt
 ```
 
 **Default behavior (no flags) - shows lines, words, and bytes:**
 ```bash
-python3 ccwc.py test.txt
+ccwc test.txt
 # Output: 7145 58164 342190 test.txt
 ```
 
 **Read from standard input:**
 ```bash
-cat test.txt | python3 ccwc.py -l
+cat test.txt | ccwc -l
 # Output: 7145
 ```
 
 **Combine multiple flags:**
 ```bash
-python3 ccwc.py -l -w test.txt
+ccwc -l -w test.txt
 # Output: 7145 58164 test.txt
 ```
 

@@ -9,7 +9,7 @@ import subprocess
 
 def run_ccwc(args):
     """
-    Helper function to run ccwc.py with given arguments
+    Helper function to run ccwc command with given arguments
 
     Args:
         args: list of command-line arguments
@@ -17,7 +17,7 @@ def run_ccwc(args):
     Returns:
         tuple: (stdout, stderr, return_code)
     """
-    cmd = ['python3', 'ccwc.py'] + args
+    cmd = ['ccwc'] + args
     result = subprocess.run(cmd, capture_output=True, text=True)
     return result.stdout.strip(), result.stderr.strip(), result.returncode
 
